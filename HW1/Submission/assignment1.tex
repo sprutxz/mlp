@@ -1,0 +1,299 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage{amsmath}
+
+\title{Assignment 1}
+\author{Leroy Souz}
+\date{19th September 2024}
+
+\begin{document}
+
+\maketitle
+
+\section*{Question 1}
+
+\noindent \textbf{1.1 If precision rate is used to measure the empirical error on the training set, what kind of circle classifier can be trained? Please provide an example.} \newline
+Precision rate counts the accuracy of positives predicted by the model. The formula used is $\frac{TP}{TP+FP}$.
+
+\noindent A circle classifier being trained to maximize precision would be one that tries to minimize the amount of negative samples in its area while maximizing positive samples. 
+One of such circle could be one that has only 1 postive sample and no negative samples. This would give a precision rate of 1.
+\bigbreak
+\noindent \textbf{1.2 If recall rate is used to measure the empirical error on the training set, what kind of circle classifier can be trained? Please provide an example.} \newline
+Recall rate calculates how good the model is at identifying positives predictions. The formula used is $\frac{TP}{TP+FN}$.
+
+\noindent A circle classifier being trained to maximize recall would try to maximize the positive examples in its area as possible which ignoring negative samples being included as these wouldn't have any effect on the recall rate.
+One of such circle could be one that has all positive samples. This would give a recall rate of 1.
+\bigbreak
+\noindent \textbf{1.3 What problems are expected for the case of 1.1 and 1.2? Would you suggest another metric to learn a reasonable circle?} \newline
+When using either one of precision or recall, the model can become really biased to either favouring positive accuracy or positive samples which can lead to in accurracte predictions. To counter this problem, a mix of both precision and recall can be used to make the model balance between both. This can be done using the F1 rate whose formla is: $\frac{2*precision*recall}{precision+recall}$.
+
+%\newpage
+
+\section*{Question 2}
+\noindent \textbf{2.1 Define the sample spaces $\Omega_2, \Omega_3, \cdots \Omega_m$ for the following experiments:}
+At every level, the ball only has two options paths to choose from, left or right. The sample space for each level is
+$\Omega_i = \{L, R\}$.
+
+Therefore, the sample space for each level will be:
+\begin{align*}
+    \Omega_2 &= \{L, R\} \\
+    \Omega_3 &= \{L, R\} \\
+    \vdots \\
+    \Omega_m &= \{L, R\}
+\end{align*}
+
+
+\noindent \textbf{2.2 Define the sample space $\Omega = \Omega_2 \times \Omega_3 \times \cdots \Omega_m$. Each element of the set $\Omega$ 
+encodes a path the ball could take until it arrives at the ground-level $L_G$} \newline
+The sample space $\Omega$ is the cartesian product of all the sample spaces $\Omega_i$ for each level. Therefore, the sample space $\Omega$ is:
+\begin{align*}
+    \Omega &= \Omega_2 \times \Omega_3 \times \cdots \Omega_m \\
+    &= \{L, R\} \times \{L, R\} \times \cdots \{L, R\} \\
+    &= \{(L, L, \cdots, L), (L, L, \cdots, R), \cdots, (R, R, \cdots, R)\}
+\end{align*}
+
+\bigbreak
+
+\noindent \textbf{2.3 What is the meaning of the location at $L_G$ where the ball finally arrives? (hint: think about
+the possible ball path resulting in the different locations like the leftmost (blue star) or the second
+left location (green star)).} \newline
+If we label the leftmost spot as 0, the location $L_G$ where the ball finally arrives is the number of right paths taken by the ball.
+
+\bigbreak
+
+\noindent \textbf{2.4  How would you represent the location numerically? Please define a random variable that map $\Omega$ to the numerical values.}\newline
+Let X be the random variable that maps $\Omega$ to the numerical values. The random variable X is defined as:
+\begin{align*}
+    X(\Omega) = \text{number of right paths taken by the ball}
+\end{align*}
+
+\bigbreak
+
+\noindent \textbf{2.5 Define the PMF of your random variable for the depth M = 5, M = 10, M=100. Plot them
+and check how the PMFs change as $M$ goes to large. Please explain the phenomenon in relation to Central Limit Theorem.} \newline
+The PMF of the random variable X is:
+\begin{align*}
+    P(X = x) = \binom{M}{x} \cdot p^x \cdot (1-p)^{M-x}
+\end{align*}
+
+When M = 5, the PMF is:
+\begin{align*}
+    P(X = x) &= \binom{5}{x} \cdot 0.5^x \cdot 0.5^{5-x} \\
+    &= \binom{5}{x} \cdot 0.5^5
+\end{align*}
+    
+When M = 10, the PMF is:
+\begin{align*}
+    P(X = x) &= \binom{10}{x} \cdot 0.5^x \cdot 0.5^{10-x} \\
+    &= \binom{10}{x} \cdot 0.5^{10}
+\end{align*}
+
+When M = 100, the PMF is:
+\begin{align*}
+    P(X = x) &= \binom{100}{x} \cdot 0.5^x \cdot 0.5^{100-x} \\
+    &= \binom{100}{x} \cdot 0.5^{100}
+\end{align*}
+
+\noindent As M goes to large, the PMF becomes more and more like a normal distribution. This is because of the Central Limit Theorem which states that the sum of a large number of independent random variables will be approximately normally distributed.
+
+%\newpage
+
+\section*{Question 3}
+
+We are given that $P(D|W) = 0.20$, $P(D|W') = 0.80$, and $P(W') = 0.30$
+\bigbreak
+\noindent \textbf{3.1 What's the chance that your plant will survive the week?}
+\begin{align*}
+    P(D) &= P(D|W)P(W) + P(D|W')P(W') \\
+    &= 0.20*0.70 + 0.80*0.30 \\
+    &= 0.14 + 0.24 \\
+    &= 0.38
+\end{align*}
+
+\noindent \textbf{3.2 If your friend forgot to water it, what's the chance it'll be dead when you return?}
+\begin{align*}
+    P(D|W') &= 0.80
+\end{align*}
+
+\noindent \textbf{3.3 If it's dead when you return, what's the chance your friend forgot to water it?}
+\begin{align*}
+    P(W'|D) &= \frac{P(D|W')P(W')}{P(D)} \\
+    &= \frac{0.80*0.30}{0.38} \\
+    &= \frac{0.24}{0.38} \\
+    &= 0.6316
+\end{align*}
+
+%\newpage
+
+\section*{Question 4}
+\noindent \textbf{4.1 Naive Bayes is a probabilistic model based on Bayes Theorem. Rewrite the formula below as G and B are conditionally independent given $D+$. Also, write about $P [D = -|G = g, B = b]$. How would you use the two formulas to determine diabetes when you have a glucose and blood pressure record (g, b)?}
+\begin{align*}
+    P[D = +|G = g, B = b] &= \frac{P[G = g, B = b|D = +] \cdot P[D = +]}{P[G = g, B = b]} \\
+\end{align*}
+We can rewrite the formula as:
+
+\begin{align*}
+    P[D = +|G = g, B = b] &= \frac{P[G = g|D = +] \cdot P[B = b|D = +] \cdot P[D = +]}{P[G = g] \cdot P[B = b]} \\
+\end{align*}
+And the formula for $P[D = -|G = g, B = b]$ is:
+
+\begin{align*}
+    P[D = -|G = g, B = b] &= \frac{P[G = g|D = -] \cdot P[B = b|D = -] \cdot P[D = -]}{P[G = g] \cdot P[B = b]} \\
+\end{align*}
+
+\noindent We can use both formulas to determine diabetes when we have a glucose and blood pressure record by comparing the probabilities of $P[D = +|G = g, B = b]$ and $P[D = -|G = g, B = b]$. If $P[D = +|G = g, B = b] > P[D = -|G = g, B = b]$, then the patient has diabetes, otherwise they don't.
+
+\bigbreak
+
+\noindent \textbf{4.4 Evaluate your classifier using “test.csv”. Use accuracy rate} \newline
+An Accuracy of 0.92 was found when evaluating the classifier using the test.csv file.
+
+\bigbreak
+
+\noindent \textbf{4.5 Do you think the standardization for data was necessary when building your Naive Bayes
+classifier? If yes, then why? If not, why we don't need to?} \newline
+Standardization was not necessary when building the Naive Bayes classifier. This is because the Naive Bayes classifier is not affected by the scale of the data. The classifier only needs to know the probability of each feature given each class.
+
+\bigbreak
+\noindent \textbf{4.6 Do you think the data reflects reality well? Which part of the previous steps would you like
+to change if we cannot collect the data again? How would you change?} \newline
+The data does not refect realtiy as there are other factors to the cause of diabetes. If we cannot collect the data again, one could do feature engineering to generate additional features.
+
+\section*{Question 5}
+\noindent \textbf{We have 10,000 3-D data points and computed mean and covariance information as below.}
+\bigbreak
+\noindent \textbf{5.1 Let Y be a random vector defined by $\vec{Y} = A\vec{X} + \vec{b}$. Express $E[Y]$ and $COV [Y, Y]$ in terms of $E[X]$ and $COV [X, X]$.} \newline
+For $E[Y]$, we have:
+\begin{align*}
+    E[Y] &= E[A\vec{X} + \vec{b}] \\
+    &= E[A\vec{X}] + E[\vec{b}] \\
+    &= A E[\vec{X}] + \vec{b}
+\end{align*}
+
+For $COV[Y, Y]$, we have:
+\begin{align*}
+    COV[\vec{Y}, \vec{Y}] &= E\left[(\vec{Y} - E[\vec{Y}])(\vec{Y} - E[\vec{Y}])^T\right]\\
+    &= E\left[(A\vec{X} - E[A\vec{X}])(A\vec{X} - E[A\vec{X}])^T\right]\\
+    &= E\left[(A\vec{X} - AE[\vec{X}])(A\vec{X} - AE[\vec{X}])^T\right]\\
+    &= E\left[A(\vec{X} - E[\vec{X}])(\vec{X} - E[\vec{X}])^TA^T\right]\\
+    &= A E\left[(\vec{X} - E[\vec{X}])(\vec{X} - E[\vec{X}])^T\right]A^T\\
+    &= A COV[\vec{X}, \vec{X}] A^T
+\end{align*}
+
+\bigbreak
+
+\noindent \textbf{5.2 Design A and b to whiten Y. i.e. E[Y ] = 0 and COV [Y, Y ] = I} \newline
+To turn $E[Y] = 0$, we can set $A E[\vec{X}] + \vec{b} = 0$. Therefore
+\begin{align*}
+    b = -A E[\vec{X}]
+\end{align*}
+
+\noindent To turn $COV[Y, Y] = I$, we can set $A COV[\vec{X}, \vec{X}] A^T = I$. To do this A must be the inverse square root of the covariance matrix of X
+We can calculate A by first finding the Eigen Decomposition of the covariance matrix of X, $COV[\vec{X}, \vec{X}] = U \Lambda U^T$.
+
+After doing the eigen Decomposition, we the eigenvectors as:
+$$
+\begin{bmatrix}
+    0.866 & -0.49 & 0 \\
+    0.49 & 0.866 & 0 \\
+    0 & 0 & 1
+\end{bmatrix}
+$$
+
+And the eigenvalues as:
+$$
+\begin{bmatrix}
+    2.99 \\
+    2 \\
+    1
+\end{bmatrix}
+$$
+
+We can then use this eigen decomposition to calculate A as $A = U \Lambda^{-1/2} U^T$.
+
+By calculating A we get:
+$$
+\begin{bmatrix}
+    0.61 & 0.06 & 0 \\
+    -0.06 & 0.67 & 0 \\
+    0 & 0 & 1
+\end{bmatrix}
+$$
+
+We can then calculate b as $b = -A E[\vec{X}]$.
+After calculating b we get:
+$$
+\begin{bmatrix}
+    -0.105\\
+    -0.191\\
+    -0.1
+\end{bmatrix}
+$$
+
+\section*{Question 6}
+\noindent \textbf{Suppose we want to measure a length, for example,
+the water depth µ at 79.137°(N) and 2.817°(E). The depth was measured repeatedly and recorded
+as $x_1, x_2, \cdots, x_n$. For device imperfection, the samples were varied by $\epsilon$ where $\epsilon \sim N (0, \sigma2)$. i.e $x = \mu+\epsilon$.
+Bayes rule allows us to evaluate the uncertainty in $\mu$ after observing $\vec{x}$ in the posterior probability as below.}
+
+\bigbreak
+
+\noindent \textbf{6.1 Given the observations $x_1, x_2, \cdots, x_n$ derive a formula to estimate $\mu^*_{ML}$ when $\mu$ is a fixed value. We
+assume the observations are i.i.d (independent and identically distributed) and follow multivariate Gaussian} \newline
+The probablity density function for each observation $x_i$ is:
+\begin{align*}
+    P(x_i|\mu, \sigma^2) &= \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x_i - \mu)^2}{2\sigma^2}\right)
+\end{align*}
+
+And the log likelihood function is:
+\begin{align*}
+    \log L(\mu, \sigma^2) &= \sum_{i=1}^{n} \log P(x_i|\mu, \sigma^2) \\
+    &= \sum_{i=1}^{n} \log \left(\frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x_i - \mu)^2}{2\sigma^2}\right)\right) \\
+    &= \sum_{i=1}^{n} \left(\log \left(\frac{1}{\sqrt{2\pi\sigma^2}}\right) - \frac{(x_i - \mu)^2}{2\sigma^2}\right) \\
+    &= -\frac{n}{2} \log(2\pi\sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^{n} (x_i - \mu)^2
+\end{align*}
+
+To find $\mu^8_{ML}$ we can differentiate the log likelihood function with respect to $\mu$ and set it to 0:
+
+\begin{align*}
+    \frac{\partial \log L(\mu, \sigma^2)}{\partial \mu} &= \frac{1}{\sigma^2} \sum_{i=1}^{n} (x_i - \mu) \\
+    &= \frac{1}{\sigma^2} \sum_{i=1}^{n} x_i - n\mu \\
+    0 &= \frac{1}{\sigma^2} \sum_{i=1}^{n} x_i - n\mu \\
+    n\mu &= \sum_{i=1}^{n} x_i \\
+    \mu^*_{ML} &= \frac{1}{n} \sum_{i=1}^{n} x_i
+\end{align*}
+
+\noindent \textbf{6.2 Given the observations $x_1, x_2, \cdots, x_n$ derive a formula to estimate $\mu^*_{MAP}$ when $\mu$ is known to
+follow Gaussian $p(\mu) \sim N(\mu_0,\sigma^2_0)$}\newline
+The random variable PDF is:
+\begin{align*}
+    f(x_n|\mu) &= \frac{1}{\sqrt{2\pi\sigma^2_0}} \exp\left(-\frac{(x_n - \mu)^2}{2\sigma^2_0}\right)
+\end{align*}
+
+and the prior PDF is:
+\begin{align*}
+    f(\mu) &= \frac{1}{\sqrt{2\pi\sigma^2_0}} \exp\left(-\frac{(\mu - \mu_0)^2}{2\sigma^2_0}\right)
+\end{align*}
+
+The MAP estimate is:
+\begin{align*}
+    \mu^*_{MAP} &= \arg\max_{\mu} \exp\left(-\frac{1}{2\sigma^2_0} \sum_{i=1}^{n} (x_i - \mu)^2 -\frac{(\mu - \mu_0)^2}{2\sigma^2_0}\right) \\
+\end{align*}
+
+To find $\mu^*_{MAP}$ we can differentiate the log likelihood function with respect to $\mu$ and set it to 0:
+\begin{align*}
+    \frac{\partial \log L(\mu, \sigma^2)}{\partial \mu} &= \frac{1}{\sigma^2_0} \sum_{i=1}^{n} (x_i - \mu) - \frac{1}{\sigma^2_0} (\mu - \mu_0) \\
+    &= \frac{1}{\sigma^2_0} \sum_{i=1}^{n} x_i - n\mu - \frac{1}{\sigma^2_0} \mu + \frac{1}{\sigma^2_0} \mu_0 \\
+    0 &= \frac{1}{\sigma^2_0} \sum_{i=1}^{n} x_i - n\mu - \frac{1}{\sigma^2_0} \mu + \frac{1}{\sigma^2_0} \mu_0 \\
+    n\mu + \mu &= \sum_{i=1}^{n} x_i + \mu_0 \\
+    \mu^*_{MAP} &= \frac{1}{n+1} \sum_{i=1}^{n} x_i + \frac{1}{n+1} \mu_0
+\end{align*}
+
+\noindent \textbf{6.3 MAP vs ML} \newline
+As N goes to infinity, the MAP estimate will converge to the ML estimate, as N goes to 0, the MAP estimate will converge to the prior mean.
+Use MLE when you have a lot of data and you are confident in the prior. Use MAP when you have a small amount of data and you want to incorporate the prior information.
+
+\end{document}

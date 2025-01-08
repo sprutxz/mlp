@@ -1,0 +1,329 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage[a4paper, total={6in, 10in}]{geometry}
+\usepackage{amsmath}
+
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{forest}
+
+\usepackage{subcaption}
+
+\title{Assignment 23}
+\author{Leroy Souz}
+\date{15th November 2024}
+
+\begin{document}
+
+\maketitle
+
+\section{Question 1}
+
+\subsection{Part 1.1}
+Entropy of dataset:
+\begin{align*}
+    Entropy(S) &= -\sum_{i=1}^{c} p_i \log_2 p_i\\
+    Entropy(S) &= -\left(\frac{5}{10} \log_2 \frac{5}{10} + \frac{5}{10} \log_2 \frac{5}{10}\right)\\
+    Entropy(S) &= 1
+\end{align*}
+
+\noindent Calculating the InformationGain for every feature:\\
+\textbf{Weather}:
+Calculating the Entropy for the Weather feature:
+\begin{itemize}
+    \item Cloudy: 0
+    \item Rainy: 0.811
+    \item Sunny: 0.981
+\end{itemize}
+
+\noindent Weighted Entropy for Weather: 0.6\\
+\noindent InformationGain for Weather: 1-0.6 = 0.4\\
+
+
+\textbf{Temperature}:
+Calculating the Entropy for the Temperature feature:
+\begin{itemize}
+    \item Hot: 1
+    \item Mild: 0.97
+    \item Cool: 0.
+\end{itemize}
+
+\noindent Weighted Entropy for Temperature: 0.885\\
+\noindent InformationGain for Temperature: 1-0.885 = 0.115\\
+
+\textbf{Humidity}:
+Calculating the Entropy for the Humidity feature:
+\begin{itemize}
+    \item High: 0.985
+    \item Normal: 0.918
+\end{itemize}
+
+\noindent Weighted Entropy for Humidity: 0.965\\
+\noindent InformationGain for Humidity: 1-0.965 = 0.035\\
+
+\textbf{Wind}:
+Calculating the Entropy for the Wind feature:
+\begin{itemize}
+    \item Weak: 0.811
+    \item Strong: 0.918
+\end{itemize}
+
+\noindent Weighted Entropy for Wind: 0.875\\
+\noindent InformationGain for Wind: 1-0.875 = 0.125\\
+
+\noindent Based on the InformationGain, the Weather feature has the most InformationGain
+and is the best feature to split on.
+
+\noindent The root node looks like:
+\begin{center}
+    \begin{forest}
+      for tree={parent anchor=south, child anchor=north, align=center, inner sep=2mm, l sep=10mm}
+      [ROOT
+        [Sunny]
+        [Cloudy]
+        [Rainy]
+      ]
+    \end{forest}
+    \end{center}
+
+\subsection{Part 1.2}
+The leaf node for Cloudy is pure and this doesn't need to be expanded.\\
+
+\noindent Information Gain when expanding the Rainy node:\\
+\textbf{Temperature}: 0.918\\
+\textbf{Humidity}: 0.918\\
+\textbf{Wind}: 0.252\\
+Thus we expand using Humidity.\\
+The leaf node for Rainy is pure and this doesn't need to be expanded.\\
+
+\noindent Information Gain when expanding the Sunny node:\\
+\textbf{Temperature}: 0.123\\
+\textbf{Humidity}: 0.123\\
+\textbf{Wind}: 0.811\\
+Thus we expand using Wind.\\
+The leaf node for Sunny is pure and this doesn't need to be expanded.\\
+
+\noindent The final tree looks like:
+\begin{center}
+    \begin{forest}
+      for tree={parent anchor=south, child anchor=north, align=center, inner sep=2mm, l sep=10mm}
+      [ROOT
+        [Sunny
+          [High Humidity
+            [DON'T PLAY]]
+          [Mid Humidity
+            [PLAY]]
+        ]
+        [Cloudy
+          [PLAY]
+        ]
+        [Rainy
+          [Strong Wind
+            [DON'T PLAY]]
+          [Weak Wind
+            [PLAY]]
+        ]
+      ]
+    \end{forest}
+    \end{center}
+
+\subsection{Part 1.3}
+Let us first consider the initial C(T) for the entire tree:
+\begin{align*}
+    C(T) &= \sum_{\tau=1}^{T'} Q(\tau) + \lambda \cdot | \text{num of leaves in } T' | \\
+    C(T) &= 0 + \lambda \cdot 5 = 5\lambda
+\end{align*}
+
+\noindent When we prune the Humidity sub-tree, the cost function becomes:
+\begin{align*}
+    C(T) &= -\left(\frac{1}{3} \log_2\left(\frac{1}{3}\right) + \frac{2}{3} \log_2\left(\frac{2}{3}\right)\right) + \lambda \cdot | \text{num of leaves in } T' | \\
+    C(T) &= 0.918 + \lambda \cdot 4 = 4\lambda + 0.918
+\end{align*}
+
+\noindent When we prune the Wind sub-tree, the cost function becomes:
+\begin{align*}
+    C(T) &= -\left(\frac{1}{4} \log_2 \left(\frac{27}{256}\right)\right) + \lambda \cdot | \text{num of leaves in } T' | \\
+    C(T) &= 0.811 + \lambda \cdot 4 = 4\lambda + 0.811
+\end{align*}
+
+\noindent now we are only left with the root whose cost function is:
+\begin{align*}
+    C(T) &= -\left(\frac{5}{10} \log_2 \left(\frac{5}{10}\right) + \frac{5}{10} \log_2 \left(\frac{5}{10}\right)\right) + \lambda \cdot | \text{num of leaves in } T' | \\
+    C(T) &= 1 + \lambda \cdot 1 = \lambda + 1
+\end{align*}
+
+\noindent We can see that as lamba goes up, it starts to penalize the leaf count more.\\
+At $\lambda = 0$, the best tree is the un pruned but when $\lambda = 0.25$
+the best tree is the root node only.
+
+\section{Question 2}
+
+\subsection{Part 2.1}
+When $w_0$ is initialized as (0,0) with a step size of 1, the algorithm will converge in 1 iteration.
+We can prove this by the following:
+
+\noindent If the weights are initialized as 0, then $w_1x_1 + w_2x_2 \leq 0$ and so the algorithm
+classifies the sample as -1 which is incorrect. Thus it will update the weights using:
+\begin{align*}
+    w_t+1 &= w_t + \eta y_t x_t \\
+    w_t+1 &= (0,0) + (x_1, x_2) = (x_1, x_2)
+\end{align*}
+
+\noindent Now on the next update, $w_1x_1 + w_2x_2 = x_1^2 + x_2^2 > 0$ (assuming $x_1$, $x_2$ are not 0) 
+and so the algorithm classifies the sample as +1 which is correct and no further updates are needed.
+
+\subsection{Part 2.2}
+When $w_0$ are randomly initialized, there can be 2 cases:
+
+\noindent \textbf{Case 1}: The weights are initialized such that $w_1x_1 + w_2x_2 > 0$. 
+In this case no further updates are needed and the algorithm converges without any iteration
+
+\noindent \textbf{Case 2}: The weights are initialized such that $w_1x_1 + w_2x_2 \leq 0$. 
+In this case the algorithm the algorithm will perform the following weight update:
+\begin{align*}
+    w_t+1 &= w_t + \eta y_t x_t \\
+    w_t+1 &= (w_1, w_2) + (x_1, x_2) = (w_1 + x_1, w_2 + x_2)
+\end{align*}
+
+\noindent Now on the 2nd iteration if $w_1x_1 + w_2x_2 <= 0$ then the algorithm will update 
+the weights again
+\begin{align*}
+    w_t+1 &= w_t + \eta y_t x_t \\
+    w_t+1 &= (w_1 + x_1, w_2 + x_2) + (x_1, x_2) = (w_1 + 2x_1, w_2 + 2x_2)
+\end{align*}
+
+\noindent This will go on for say $n$ iterations. The algorithm will keep updating the weights 
+till $w_1x_1 + w_2x_2 > 0$ and so the weights will be $(w_1 + nx_1, w_2 + nx_2)$. 
+We can write the convergence rule as:
+$$
+\vec{w}^T_nx>0
+$$
+
+\noindent Substituting the weights we get:
+\begin{align*}
+    (w_0 + nx)^Tx > 0\\
+    w^T_0x + nx^Tx > 0\\
+    n > -\frac{w^T_0x}{x^Tx}
+\end{align*}
+
+\noindent This gives us a lower bound on the number of iterations needed for convergence.
+\newpage
+
+\subsection{Part 2.3}
+
+I use only mmisclassified points to update the weights.\\
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+iteration & \multicolumn{1}{l|}{$\vec{w}$} \\
+\hline
+0 & $w_0 = (0,0)$ \\
+\hline
+1 & $w_1 = (0,0) + (0,1) = (0,1)$ \\
+\hline
+2 & $w_2 = (0,1) - (1,0.5) = (-1,0.5)$ \\
+\hline
+3 & $w_3 = (-1,0.5) + (1,1) = (0,1.5)$ \\
+\hline
+4 & $w_4 = (0,1.5) - (1,0.5) = (-1,1)$ \\
+\hline
+5 & $w_5 = (-1,1) + (1,1) = (0,2)$ \\
+\hline
+6 & $w_6 = (0,2) - (1,0.5) = (-1, 1.5)$ \\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+\section{Question 3}
+
+\subsection{Part 3.1}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+class & mean & var \\
+\hline
+pos(+) & -0.072 & 1.30 \\
+\hline
+neg(-) & 0.94 & 1.94 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Part 3.2}
+The test accuracy is 61\%
+
+\subsection{Part 3.3}
+The MLE estimate is not a good rule in this case. MLE only considers how likely one class is compared
+to the other and does not take into account if one class is way more freqeuent than the other. For our data 
+the negative class is 9x more frequent and MLE is unoptimal. We instead incorporate the prior probabilities
+to maka a better classifier.\\
+Through this we get an accuracy of 90\%
+
+
+
+\subsection{Part 3.4}
+% Define the first matrix as a macro
+\newcommand{\matrixA}{\begin{pmatrix} 
+0.98285498 & 0.00612046 \\ 
+0.00612046 & 1.05782804 
+\end{pmatrix}}
+    
+% Define the second matrix as a macro
+\newcommand{\matrixB}{\begin{pmatrix} 
+1.00329037 & -0.01142356 \\ 
+-0.01142356 & 4.97693356 
+\end{pmatrix}}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+class & mean & COV \\
+\hline
+pos(+) & [0.013, 0.063] & [-0.023, -0.021] \\
+\hline
+neg(-) & $\matrixA$ & $\matrixB$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Part 3.5}
+The test accuracy is 84\%
+
+\subsection{Part 3.6}
+The testing accuracy is 85\%.
+There was not a big difference in the increase in accuracy between the two models. 
+We can thus conclude that as long as the distributiuon of data is somewhat gaussian,
+using GDA for classification will perform well on the data
+
+
+\section{Question 4}
+
+\subsection{Part 4.1}
+IF-IDF tries to capture how many times a term appears in a document with respect to all documents.
+It combines TF, which calculate the importanct of a word in a document, and IDF, which calculates the
+how unique the word is across all documents. TF-IDF gives us a score for each word that is high if the word
+appears many times in a document but not in many documents thus showing us important words while
+filtering out common words.
+
+\subsection{Part 4.2}
+Find code in the attached file
+
+\subsection{Part 4.3}
+Find code in the attached file
+
+\subsection{Part 4.4}
+train accuracy is 96.5\%
+test accuracy is 97\%
+
+\subsection{Part 4.5}
+The model classifies 'mail.txt' as spam.
+
+\end{document}
